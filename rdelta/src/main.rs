@@ -1,3 +1,9 @@
+#![warn(elided_lifetimes_in_paths)]
+#![warn(explicit_outlives_requirements)]
+#![warn(meta_variable_misuse)]
+#![deny(missing_abi)]
+#![warn(missing_copy_implementations)]
+
 use colored::Colorize;
 use itertools::{EitherOrBoth::*, Itertools};
 use unicode_segmentation::UnicodeSegmentation;
