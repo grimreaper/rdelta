@@ -10,3 +10,6 @@ clap = { version = "4.0.32", features = ["derive"] }
 colored = "2.0.0"
 itertools = "0.10.5"
 unicode-segmentation = "1.10.0"
+argfile = "0.1.5"
+wild = "2"
+clap-verbosity-flag = "2.0.0"

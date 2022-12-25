@@ -14,6 +14,8 @@ use clap::Parser;
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 struct Args {
+    #[clap(flatten)]
+    verbose: clap_verbosity_flag::Verbosity,
 }
 
 // fn outputdiff(str: EitherOrBoth<&str, &str>) {
