@@ -4,6 +4,9 @@
 #![deny(missing_abi)]
 #![warn(missing_copy_implementations)]
 
+use std::borrow::Borrow;
+use std::ops::Deref;
+use std::slice::Iter;
 use colored::Colorize;
 use itertools::Itertools;
 use itertools::EitherOrBoth::{Left, Right, Both};
@@ -18,34 +21,41 @@ struct Args {
     verbose: clap_verbosity_flag::Verbosity,
 }
 
-// fn outputdiff(str: EitherOrBoth<&str, &str>) {
-//
-// }
+// struct {}
 
-fn simplediff(a: &str, b: &str) {
+fn outputdiff<'a>(out: impl Iterator<Item=String>) -> () {
+    for s in out {
+        print!("{}", s)
+    }
+    print!("\n")
+}
+
+fn simplediff<'l>(a: &'l str, b: &'l str) -> impl Iterator<Item=String> {
     let combined = a.graphemes(true).zip_longest(b.graphemes(true));
+    let mut output: Vec<String> = Vec::new();
     for set in combined {
         match set {
             Both(l, r) if l == r => {
-                print!("{}", l)
+                output.push(l.to_string())
             }
             Both(l, r) => {
-                print!("{}", l.red());
-                print!("{}",r.green());
+                output.push(l.red().to_string());
+                output.push(r.green().to_string());
             }
             Left(l) => {
-                print!("{}",l.red());
+                output.push(l.red().to_string());
             }
             Right(r) => {
-                print!("{}", r.green());
+                output.push(r.green().to_string());
             }
         }
     }
-    print!("\n")
+    output.into_iter()
 }
 
 fn main() {
     let args = Args::parse();
     println!("Hello, world!");
-    simplediff("yolo world", "hello world");
+    let vec= simplediff("yolo world", "hello world");
+    outputdiff(vec);
 }
