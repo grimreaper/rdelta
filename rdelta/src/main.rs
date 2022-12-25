@@ -9,6 +9,13 @@ use itertools::Itertools;
 use itertools::EitherOrBoth::{Left, Right, Both};
 use unicode_segmentation::UnicodeSegmentation;
 
+use clap::Parser;
+
+#[derive(Parser, Debug)]
+#[command(author, version, about, long_about = None)]
+struct Args {
+}
+
 // fn outputdiff(str: EitherOrBoth<&str, &str>) {
 //
 // }
@@ -36,6 +43,7 @@ fn simplediff(a: &str, b: &str) {
 }
 
 fn main() {
+    let args = Args::parse();
     println!("Hello, world!");
     simplediff("yolo world", "hello world");
 }
