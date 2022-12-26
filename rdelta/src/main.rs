@@ -15,6 +15,7 @@ use unicode_segmentation::UnicodeSegmentation;
 use clap::Parser;
 
 mod addremove;
+mod simplediff;
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
@@ -26,6 +27,6 @@ struct Args {
 fn main() {
     let args = Args::parse();
     println!("Hello, world!");
-    let vec= addremove::simplediff("yolo world", "hello world");
-    addremove::coloroutputdiff(vec);
+    let vec= simplediff::simplediff("yolo world", "hello world");
+    simplediff::coloroutputdiff(vec);
 }
