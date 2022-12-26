@@ -65,6 +65,18 @@ mod tests {
     }
 
     #[test]
+    fn coloroutput_add_string() {
+        let output = coloroutputdiff(vec![Add("a".to_owned())].into_iter());
+        assert_eq!(output, "a".green().to_string())
+    }
+
+    #[test]
+    fn coloroutput_remove_string() {
+        let output = coloroutputdiff(vec![Remove("a".to_owned())].into_iter());
+        assert_eq!(output, "a".red().to_string())
+    }
+
+    #[test]
     fn simpleoutput_empty_string() {
         let output = simpleoutput(vec![].into_iter());
         assert_eq!(output, "")
