@@ -31,3 +31,15 @@ fn main() {
     };
     println!("{}", output)
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use pretty_assertions::assert_eq;
+
+    #[test]
+    fn verify_cli() {
+        use clap::CommandFactory;
+        Args::command().debug_assert()
+    }
+}
