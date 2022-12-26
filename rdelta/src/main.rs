@@ -21,32 +21,52 @@ struct Args {
     verbose: clap_verbosity_flag::Verbosity,
 }
 
-// struct {}
 
-fn outputdiff<'a>(out: impl Iterator<Item=String>) -> () {
-    for s in out {
-        print!("{}", s)
+
+enum AddRemove {
+    Add(String),
+    Same(String),
+    Remove(String),
+    Replace(String, String),
+}
+
+fn coloroutputdiff<'a>(out: impl Iterator<Item=AddRemove>) -> () {
+    for item in out {
+        match item {
+            AddRemove::Add(s) => {
+                print!("{}", s.green());
+            }
+            AddRemove::Remove(s) => {
+                print!("{}", s.red());
+            }
+            AddRemove::Same(s) => {
+                print!("{}", s);
+            }
+            AddRemove::Replace(l, r) => {
+                print!("{}", l.red());
+                print!("{}", r.green());
+            }
+        }
     }
     print!("\n")
 }
 
-fn simplediff<'l>(a: &'l str, b: &'l str) -> impl Iterator<Item=String> {
+fn simplediff<'l>(a: &'l str, b: &'l str) -> impl Iterator<Item=AddRemove> {
     let combined = a.graphemes(true).zip_longest(b.graphemes(true));
-    let mut output: Vec<String> = Vec::new();
+    let mut output: Vec<AddRemove> = Vec::new();
     for set in combined {
         match set {
             Both(l, r) if l == r => {
-                output.push(l.to_string())
+                output.push(AddRemove::Same(l.to_string()))
             }
             Both(l, r) => {
-                output.push(l.red().to_string());
-                output.push(r.green().to_string());
+                output.push(AddRemove::Replace(l.to_string(), r.to_string()));
             }
             Left(l) => {
-                output.push(l.red().to_string());
+                output.push(AddRemove::Remove(l.to_string()));
             }
             Right(r) => {
-                output.push(r.green().to_string());
+                output.push(AddRemove::Remove(r.to_string()));
             }
         }
     }
@@ -57,5 +77,5 @@ fn main() {
     let args = Args::parse();
     println!("Hello, world!");
     let vec= simplediff("yolo world", "hello world");
-    outputdiff(vec);
+    coloroutputdiff(vec);
 }
