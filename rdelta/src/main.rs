@@ -19,6 +19,6 @@ struct Args {
 fn main() {
     let args = Args::parse();
     println!("Hello, world!");
-    let vec= simplediff::simplediff("yolo world", "hello world");
+    let vec = simplediff::simplediff("yolo world", "hello world");
     simplediff::coloroutputdiff(vec);
 }
