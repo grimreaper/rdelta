@@ -4,14 +4,6 @@
 #![deny(missing_abi)]
 #![warn(missing_copy_implementations)]
 
-use std::borrow::Borrow;
-use std::ops::Deref;
-use std::slice::Iter;
-use colored::Colorize;
-use itertools::Itertools;
-use itertools::EitherOrBoth::{Both, Left, Right};
-use unicode_segmentation::UnicodeSegmentation;
-
 use clap::Parser;
 
 mod addremove;

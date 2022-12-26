@@ -40,9 +40,45 @@ pub fn simplediff<'l>(a: &'l str, b: &'l str) -> impl Iterator<Item=AddRemove> {
                 output.push(AddRemove::Remove(l.to_string()));
             }
             Right(r) => {
-                output.push(AddRemove::Remove(r.to_string()));
+                output.push(AddRemove::Add(r.to_string()));
             }
         }
     }
     output.into_iter()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use super::AddRemove::*;
+
+    #[test]
+    fn simplediff_empty_string() {
+        let res = simplediff("", "");
+        let vec = res.collect_vec();
+        assert_eq!(vec, vec![])
+    }
+
+    #[test]
+    fn simplediff_same_string() {
+        let res = simplediff("hel", "hel");
+        let vec = res.collect_vec();
+        assert_eq!(vec, vec![Same("h".to_string()),Same("e".to_string()), Same("l".to_string())])
+    }
+
+    #[test]
+    fn simplediff_add_two() {
+        let res = simplediff("h", "hel");
+        let vec = res.collect_vec();
+        assert_eq!(vec, vec![Same("h".to_string()),Add("e".to_string()), Add("l".to_string())])
+    }
+
+    #[test]
+    fn simplediff_remove_two() {
+        let res = simplediff("hel", "h");
+        let vec = res.collect_vec();
+        assert_eq!(vec, vec![Same("h".to_string()), Remove("e".to_string()), Remove("l".to_string())])
+    }
+
+
 }

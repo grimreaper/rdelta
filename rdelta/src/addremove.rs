@@ -1,8 +1,4 @@
-use itertools::EitherOrBoth::{Both, Left, Right};
-use colored::Colorize;
-use unicode_segmentation::UnicodeSegmentation;
-use itertools::Itertools;
-
+#[derive(Debug, PartialEq)]
 pub enum AddRemove {
     Add(String),
     Same(String),
