@@ -7,8 +7,8 @@
 use clap::Parser;
 
 mod addremove;
-mod simplediff;
 mod output;
+mod simplediff;
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]

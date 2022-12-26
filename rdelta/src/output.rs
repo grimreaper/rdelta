@@ -1,6 +1,6 @@
-use std::ops::Deref;
-use colored::Colorize;
 use crate::addremove::AddRemove;
+use colored::Colorize;
+use std::ops::Deref;
 
 pub fn coloroutputdiff<'a>(datum: impl Iterator<Item = AddRemove>) -> String {
     let mut out = String::new();
@@ -54,40 +54,37 @@ mod tests {
 
     #[test]
     fn coloroutputdiff_empty_string() {
-        let output = coloroutputdiff(vec!().into_iter());
+        let output = coloroutputdiff(vec![].into_iter());
         assert_eq!(output, "")
     }
 
     #[test]
     fn coloroutput_same_string() {
-        let output = coloroutputdiff(vec!(Same("a".to_owned())).into_iter());
+        let output = coloroutputdiff(vec![Same("a".to_owned())].into_iter());
         assert_eq!(output, "a")
     }
 
-
     #[test]
     fn simpleoutput_empty_string() {
-        let output = simpleoutput(vec!().into_iter());
+        let output = simpleoutput(vec![].into_iter());
         assert_eq!(output, "")
     }
 
     #[test]
     fn simpleoutput_same_string() {
-        let output = simpleoutput(vec!(Same("a".to_owned())).into_iter());
+        let output = simpleoutput(vec![Same("a".to_owned())].into_iter());
         assert_eq!(output, "a")
     }
 
     #[test]
     fn simpleoutput_add_string() {
-        let output = simpleoutput(vec!(Add("a".to_owned())).into_iter());
+        let output = simpleoutput(vec![Add("a".to_owned())].into_iter());
         assert_eq!(output, "+a")
     }
 
     #[test]
     fn simpleoutput_remove_string() {
-        let output = simpleoutput(vec!(Remove("a".to_owned())).into_iter());
+        let output = simpleoutput(vec![Remove("a".to_owned())].into_iter());
         assert_eq!(output, "-a")
     }
-
-
 }
