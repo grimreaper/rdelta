@@ -1,43 +1,93 @@
+use std::ops::Deref;
 use colored::Colorize;
 use crate::addremove::AddRemove;
 
-pub fn coloroutputdiff<'a>(out: impl Iterator<Item = AddRemove>) -> () {
-    for item in out {
+pub fn coloroutputdiff<'a>(datum: impl Iterator<Item = AddRemove>) -> String {
+    let mut out = String::new();
+    for item in datum {
         match item {
             AddRemove::Add(s) => {
-                print!("{}", s.green());
+                out.push_str(s.green().to_string().as_str());
             }
             AddRemove::Remove(s) => {
-                print!("{}", s.red());
+                out.push_str(s.red().to_string().as_str());
             }
             AddRemove::Same(s) => {
-                print!("{}", s);
+                out.push_str(s.deref());
             }
             AddRemove::Replace(l, r) => {
-                print!("{}", l.red());
-                print!("{}", r.green());
+                out.push_str(l.red().to_string().as_str());
+                out.push_str(r.green().to_string().as_str());
             }
         }
     }
-    print!("\n")
+    out
 }
 
-pub fn simpleoutput<'a>(out: impl Iterator<Item = AddRemove>) -> () {
-    for item in out {
+pub fn simpleoutput<'a>(datum: impl Iterator<Item = AddRemove>) -> String {
+    let mut out = String::new();
+    for item in datum {
         match item {
             AddRemove::Add(s) => {
-                print!("+{}", s);
+                out.push_str(format!("+{}", s).as_str());
             }
             AddRemove::Remove(s) => {
-                print!("-{}",s );
+                out.push_str(format!("-{}", s).as_str());
             }
             AddRemove::Same(s) => {
-                print!("{}", s);
+                out.push_str(s.as_str());
             }
             AddRemove::Replace(rem, add) => {
-                print!("-{}+{}", rem, add);
+                out.push_str(format!("-{}+{}", rem, add).as_str());
             }
         }
     }
-    print!("\n")
+    out
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use pretty_assertions::assert_eq;
+
+    use super::AddRemove::*;
+
+    #[test]
+    fn coloroutputdiff_empty_string() {
+        let output = coloroutputdiff(vec!().into_iter());
+        assert_eq!(output, "")
+    }
+
+    #[test]
+    fn coloroutput_same_string() {
+        let output = coloroutputdiff(vec!(Same("a".to_owned())).into_iter());
+        assert_eq!(output, "a")
+    }
+
+
+    #[test]
+    fn simpleoutput_empty_string() {
+        let output = simpleoutput(vec!().into_iter());
+        assert_eq!(output, "")
+    }
+
+    #[test]
+    fn simpleoutput_same_string() {
+        let output = simpleoutput(vec!(Same("a".to_owned())).into_iter());
+        assert_eq!(output, "a")
+    }
+
+    #[test]
+    fn simpleoutput_add_string() {
+        let output = simpleoutput(vec!(Add("a".to_owned())).into_iter());
+        assert_eq!(output, "+a")
+    }
+
+    #[test]
+    fn simpleoutput_remove_string() {
+        let output = simpleoutput(vec!(Remove("a".to_owned())).into_iter());
+        assert_eq!(output, "-a")
+    }
+
+
 }

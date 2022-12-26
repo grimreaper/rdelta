@@ -22,9 +22,12 @@ struct Args {
 fn main() {
     let args = Args::parse();
     let vec = simplediff::simplediff("yolo world", "hello world");
-    if args.color {
-        output::coloroutputdiff(vec);
-    } else {
-        output::simpleoutput(vec)
-    }
+    let output: String = {
+        if args.color {
+            output::coloroutputdiff(vec)
+        } else {
+            output::simpleoutput(vec)
+        }
+    };
+    println!("{}", output)
 }
