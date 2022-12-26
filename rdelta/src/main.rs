@@ -5,6 +5,7 @@
 #![warn(missing_copy_implementations)]
 
 use clap::Parser;
+use clap::{arg, command, value_parser, ArgAction, Command};
 
 mod addremove;
 mod output;
@@ -20,10 +21,12 @@ struct Args {
 }
 
 fn main() {
-    let args = Args::parse();
+    let args = wild::args_os();
+    let args = argfile::expand_args_from(args, argfile::parse_fromfile, argfile::PREFIX).unwrap();
+    let matches = Args::parse_from(args);
     let vec = simplediff::simplediff("yolo world", "hello world");
     let output: String = {
-        if args.color {
+        if matches.color {
             output::coloroutputdiff(vec)
         } else {
             output::simpleoutput(vec)
