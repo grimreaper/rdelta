@@ -8,17 +8,23 @@ use clap::Parser;
 
 mod addremove;
 mod simplediff;
+mod output;
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 struct Args {
+    #[arg(short, long)]
+    color: bool,
     #[clap(flatten)]
     verbose: clap_verbosity_flag::Verbosity,
 }
 
 fn main() {
     let args = Args::parse();
-    println!("Hello, world!");
     let vec = simplediff::simplediff("yolo world", "hello world");
-    simplediff::coloroutputdiff(vec);
+    if args.color {
+        output::coloroutputdiff(vec);
+    } else {
+        output::simpleoutput(vec)
+    }
 }

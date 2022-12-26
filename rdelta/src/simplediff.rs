@@ -1,29 +1,7 @@
 use crate::addremove::AddRemove;
-use colored::Colorize;
 use itertools::EitherOrBoth::{Both, Left, Right};
 use itertools::Itertools;
 use unicode_segmentation::UnicodeSegmentation;
-
-pub fn coloroutputdiff<'a>(out: impl Iterator<Item = AddRemove>) -> () {
-    for item in out {
-        match item {
-            AddRemove::Add(s) => {
-                print!("{}", s.green());
-            }
-            AddRemove::Remove(s) => {
-                print!("{}", s.red());
-            }
-            AddRemove::Same(s) => {
-                print!("{}", s);
-            }
-            AddRemove::Replace(l, r) => {
-                print!("{}", l.red());
-                print!("{}", r.green());
-            }
-        }
-    }
-    print!("\n")
-}
 
 pub fn simplediff<'l>(a: &'l str, b: &'l str) -> impl Iterator<Item = AddRemove> {
     let combined = a.graphemes(true).zip_longest(b.graphemes(true));
